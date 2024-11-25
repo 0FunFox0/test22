@@ -24,45 +24,38 @@ h1 {
     color: #333;
 }
 
-.card {
-    width: 100%;
-    height: 150px;
-    margin: 20px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.word-list {
+    margin-top: 20px;
+}
+
+.word-item {
     background-color: #e0e0e0;
     border-radius: 10px;
-    font-size: 20px;
-    color: #333;
-    transition: all 0.3s ease;
+    margin: 10px 0;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.word-item:hover {
+    background-color: #4CAF50;
+    color: white;
 }
 
 .word {
-    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
 }
 
 .definition {
-    display: none;
-    font-style: italic;
+    font-size: 14px;
     color: #666;
+    margin-top: 5px;
+    display: none; /* 기본적으로 정의는 숨김 */
 }
 
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 10px;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-button:focus {
-    outline: none;
+/* 단어 클릭 시 정의 보이기 */
+.word-item.active .definition {
+    display: block;
 }
