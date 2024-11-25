@@ -46,4 +46,39 @@ const terms = [
     { word: "Cortex", definition: "뇌의 외부 부분, 고차원적인 사고와 감각을 담당." },
     { word: "Medulla", definition: "뇌의 내부 부분, 기본적인 생리적 기능을 담당." },
     { word: "Cerebellum", definition: "뇌의 일부로, 운동 조정과 균형을 담당." },
-    { word: "Myocardium", definition: "심장의 근육층
+    { word: "Myocardium", definition: "심장의 근육층." }
+];
+
+// 현재 단어 인덱스
+let currentIndex = 0;
+
+// DOM 요소
+const wordElement = document.getElementById("word");
+const definitionElement = document.getElementById("definition");
+const flipButton = document.getElementById("flip-button");
+const nextButton = document.getElementById("next-button");
+
+// 단어 카드 뒤집기
+flipButton.addEventListener("click", () => {
+    if (definitionElement.style.display === "none") {
+        definitionElement.style.display = "block";
+        wordElement.style.display = "none";
+    } else {
+        definitionElement.style.display = "none";
+        wordElement.style.display = "block";
+    }
+});
+
+// 다음 단어로 넘어가기
+nextButton.addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % terms.length;  // 인덱스를 순차적으로 변경, 끝에 도달하면 처음으로 돌아감
+    wordElement.innerText = terms[currentIndex].word;
+    definitionElement.innerText = terms[currentIndex].definition;
+    definitionElement.style.display = "none";  // 단어를 다시 보여주고 정의는 숨김
+    wordElement.style.display = "block";
+});
+
+// 첫 번째 단어 표시
+wordElement.innerText = terms[currentIndex].word;
+definitionElement.innerText = terms[currentIndex].definition;
+definitionElement.style.display = "none";  // 처음에는 정의가 보이지 않도록 설정
