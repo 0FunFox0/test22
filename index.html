@@ -1,57 +1,166 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>해부학 및 생리학 단어장</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>해부생리학 단어 시험</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eef2f3;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #ffffff;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            padding: 20px;
+            margin: 0;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+        .quiz-container {
+            width: 100%;
+            max-width: 600px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .content {
+            padding: 20px;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            padding: 12px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #667eea;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #495bcf;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .result.success {
+            color: #28a745;
+        }
+        .result.error {
+            color: #dc3545;
+        }
+        .summary {
+            text-align: left;
+        }
+        .summary h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .summary ul {
+            list-style: none;
+            padding: 0;
+        }
+        .summary li {
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>해부학 및 생리학 단어장</h1>
-        <div class="word-list">
-            <div class="word-item">
-                <div class="word">Cardiac Muscle</div>
-                <div class="definition">심장에서만 발견되는 근육으로, 혈액을 펌프하는 역할을 한다.</div>
+    <div class="quiz-container">
+        <h1>해부생리학 단어 시험</h1>
+        <div class="content" id="quiz-content">
+            <div class="question">
+                <span id="question">단어를 맞춰보세요!</span>
             </div>
-            <div class="word-item">
-                <div class="word">Neuron</div>
-                <div class="definition">신경계에서 메시지를 전달하는 세포.</div>
-            </div>
-            <div class="word-item">
-                <div class="word">Plasma</div>
-                <div class="definition">혈액의 맑고 황색의 액체 부분으로, 물, 단백질 및 기타 영양소를 포함한다.</div>
-            </div>
-            <div class="word-item">
-                <div class="word">Aorta</div>
-                <div class="definition">몸의 나머지 부분에 산소화된 혈액을 공급하는 가장 큰 동맥.</div>
-            </div>
-            <div class="word-item">
-                <div class="word">Heart</div>
-                <div class="definition">혈액을 순환시키는 주요 기관으로, 두 개의 심방과 두 개의 심실을 가진다.</div>
-            </div>
-            <div class="word-item">
-                <div class="word">Blood Vessels</div>
-                <div class="definition">혈액이 흐르는 통로로, 동맥, 정맥, 모세혈관으로 나뉜다.</div>
-            </div>
-            <div class="word-item">
-                <div class="word">Muscle</div>
-                <div class="definition">신체의 움직임을 담당하는 조직.</div>
-            </div>
-            <div class="word-item">
-                <div class="word">Liver</div>
-                <div class="definition">신체에서 해독, 대사 및 저장 기능을 수행하는 주요 기관.</div>
-            </div>
-            <div class="word-item">
-                <div class="word">Brain</div>
-                <div class="definition">중추 신경계를 구성하며, 생각, 감정, 기억 및 운동을 조절한다.</div>
-            </div>
-            <div class="word-item">
-                <div class="word">Lungs</div>
-                <div class="definition">산소를 흡수하고 이산화탄소를 배출하는 기관.</div>
-            </div>
-            <!-- 추가 단어들 여기 입력 -->
+            <input type="text" id="answer" placeholder="정답을 입력하세요">
+            <button onclick="checkAnswer()">제출</button>
+            <div class="result" id="result"></div>
         </div>
     </div>
+
+    <script>
+        const quizData = [
+            { word: "Cell", definition: "단어: Cell 뜻: 세포" },
+            { word: "Tissue", definition: "단어: Tissue 뜻: 조직" },
+            { word: "Organ", definition: "단어: Organ 뜻: 기관" },
+            { word: "System", definition: "단어: System 뜻: 계통" },
+            { word: "Superior", definition: "단어: Superior 뜻: 위" },
+            { word: "Inferior", definition: "단어: Inferior 뜻: 아래" },
+            { word: "Anterior", definition: "단어: Anterior 뜻: 앞" },
+            { word: "Ventral", definition: "단어: Ventral 뜻: 정면에, 복측" },
+            { word: "Posterior", definition: "단어: Posterior 뜻: 뒤" },
+            { word: "Dorsal", definition: "단어: Dorsal 뜻: 후면에, 배측(背側)" }
+        ];
+
+        let currentQuestion = 0;
+        let incorrectAnswers = [];
+
+        function loadQuestion() {
+            const questionElement = document.getElementById("question");
+            questionElement.textContent = quizData[currentQuestion].definition;
+            document.getElementById("answer").value = "";
+            document.getElementById("result").textContent = "";
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById("answer").value.trim();
+            const correctAnswer = quizData[currentQuestion].word;
+
+            if (userAnswer.toLowerCase() !== correctAnswer.toLowerCase()) {
+                incorrectAnswers.push({
+                    question: quizData[currentQuestion].definition,
+                    correctAnswer: correctAnswer
+                });
+            }
+
+            currentQuestion++;
+
+            if (currentQuestion < quizData.length) {
+                loadQuestion();
+            } else {
+                showSummary();
+            }
+        }
+
+        function showSummary() {
+            const quizContent = document.getElementById("quiz-content");
+            quizContent.innerHTML = `<div class="summary">
+                <h2>시험 결과</h2>
+                <p>총 ${quizData.length}문제 중 ${incorrectAnswers.length}문제를 틀렸습니다.</p>
+                <ul>
+                    ${incorrectAnswers.map(item => `<li>${item.question} - 정답: ${item.correctAnswer}</li>`).join('')}
+                </ul>
+                <button onclick="location.reload()">다시 시작</button>
+            </div>`;
+        }
+
+        loadQuestion();
+    </script>
 </body>
 </html>
+
